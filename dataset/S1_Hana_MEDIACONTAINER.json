@@ -1,0 +1,50 @@
+{
+	"name": "S1_Hana_MEDIACONTAINER",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "s1_hana",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RelationalTable",
+		"structure": [
+			{
+				"name": "HJMPTS"
+			},
+			{
+				"name": "CREATEDTS"
+			},
+			{
+				"name": "MODIFIEDTS"
+			},
+			{
+				"name": "TYPEPKSTRING"
+			},
+			{
+				"name": "OWNERPKSTRING"
+			},
+			{
+				"name": "PK"
+			},
+			{
+				"name": "P_QUALIFIER"
+			},
+			{
+				"name": "P_CATALOGVERSION"
+			},
+			{
+				"name": "P_CONVERSIONGROUP"
+			},
+			{
+				"name": "ACLTS"
+			},
+			{
+				"name": "PROPTS"
+			},
+			{
+				"name": "SEALED"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

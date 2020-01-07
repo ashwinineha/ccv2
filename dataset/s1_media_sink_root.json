@@ -1,0 +1,18 @@
+{
+	"name": "s1_media_sink_root",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "s1_blob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "sys-master-root"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

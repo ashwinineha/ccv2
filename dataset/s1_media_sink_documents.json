@@ -1,0 +1,19 @@
+{
+	"name": "s1_media_sink_documents",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "s1_blob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "documents",
+				"container": "sys-master-documents"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

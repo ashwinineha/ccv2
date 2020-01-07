@@ -1,0 +1,104 @@
+{
+	"name": "S1_Hana_Azure_USERS",
+	"properties": {
+		"activities": [
+			{
+				"name": "HanaToAzureCopy",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"retry": 10,
+					"retryIntervalInSeconds": 30
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RelationalSource",
+						"query": "SELECT * FROM HYB.USERS"
+					},
+					"sink": {
+						"type": "SqlSink",
+						"writeBatchSize": 10000,
+						"preCopyScript": {
+							"value": "TRUNCATE TABLE [dbo].[USERS]",
+							"type": "Expression"
+						}
+					},
+					"enableStaging": false,
+					"parallelCopies": 4,
+					"dataIntegrationUnits": 4,
+					"translator": {
+						"type": "TabularTranslator",
+						"columnMappings": {
+							"HJMPTS": "hjmpTS",
+							"CREATEDTS": "createdTS",
+							"MODIFIEDTS": "modifiedTS",
+							"TYPEPKSTRING": "TypePkString",
+							"OWNERPKSTRING": "OwnerPkString",
+							"PK": "PK",
+							"SEALED": "sealed",
+							"P_DESCRIPTION": "p_description",
+							"P_NAME": "p_name",
+							"P_UID": "p_uid",
+							"P_PROFILEPICTURE": "p_profilepicture",
+							"P_BACKOFFICELOGINDISABLED": "p_backofficelogindisabled",
+							"P_DEFAULTPAYMENTADDRESS": "p_defaultpaymentaddress",
+							"P_DEFAULTSHIPMENTADDRESS": "p_defaultshipmentaddress",
+							"P_PASSWORDENCODING": "p_passwordencoding",
+							"PASSWD": "passwd",
+							"P_PASSWORDANSWER": "p_passwordanswer",
+							"P_PASSWORDQUESTION": "p_passwordquestion",
+							"P_SESSIONLANGUAGE": "p_sessionlanguage",
+							"P_SESSIONCURRENCY": "p_sessioncurrency",
+							"P_LOGINDISABLED": "p_logindisabled",
+							"P_LASTLOGIN": "p_lastlogin",
+							"P_HMCLOGINDISABLED": "p_hmclogindisabled",
+							"P_RETENTIONSTATE": "p_retentionstate",
+							"P_USERPROFILE": "p_userprofile",
+							"P_DEACTIVATIONDATE": "p_deactivationdate",
+							"P_EUROPE1PRICEFACTORY_UDG": "p_europe1pricefactory_udg",
+							"P_EUROPE1PRICEFACTORY_UPG": "p_europe1pricefactory_upg",
+							"P_EUROPE1PRICEFACTORY_UTG": "p_europe1pricefactory_utg",
+							"P_AUTHORIZEDTOUNLOCKPAGES": "p_authorizedtounlockpages",
+							"ACLTS": "aCLTS",
+							"PROPTS": "propTS",
+							"P_SAPID": "p_sapid",
+							"P_PHONENUM": "p_phonenum",
+							"P_EMAIL": "p_email",
+							"P_CUSTOMERID": "p_customerid",
+							"P_PREVIEWCATALOGVERSIONS": "p_previewcatalogversions",
+							"P_TITLE": "p_title",
+							"P_DEFAULTPAYMENTINFO": "p_defaultpaymentinfo",
+							"P_TOKEN": "p_token",
+							"P_ORIGINALUID": "p_originaluid",
+							"P_TYPE": "p_type",
+							"P_SAPCONSUMERID": "p_sapconsumerid",
+							"P_SAPCONTACTID": "p_sapcontactid",
+							"P_SAPISREPLICATED": "p_sapisreplicated",
+							"P_SAPREPLICATIONINFO": "p_sapreplicationinfo",
+							"P_SENDWELCOMEEMAIL": "p_sendwelcomeemail",
+							"P_WELCOMEEMAILSENT": "p_welcomeemailsent",
+							"P_ONBOARDINGTOKEN": "p_onboardingtoken",
+							"P_ACTIVE": "p_active",
+							"P_DEFAULTB2BUNIT": "p_defaultb2bunit"
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "S1_Hana_USERS",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "S1_Azure_users",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

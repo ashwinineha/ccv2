@@ -1,0 +1,65 @@
+{
+	"name": "D1_Hana_Azure_MEDIAPROPS",
+	"properties": {
+		"activities": [
+			{
+				"name": "HanaToAzureCopy",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RelationalSource",
+						"query": "SELECT * FROM HYB.MEDIAPROPS"
+					},
+					"sink": {
+						"type": "SqlSink",
+						"writeBatchSize": 10000,
+						"preCopyScript": {
+							"value": "TRUNCATE TABLE [dbo].[MEDIAPROPS]",
+							"type": "Expression"
+						}
+					},
+					"enableStaging": false,
+					"parallelCopies": 4,
+					"dataIntegrationUnits": 4,
+					"translator": {
+						"type": "TabularTranslator",
+						"columnMappings": {
+							"HJMPTS": "hjmpTS",
+							"ITEMPK": "ITEMPK",
+							"ITEMTYPEPK": "ITEMTYPEPK",
+							"NAME": "NAME",
+							"LANGPK": "LANGPK",
+							"REALNAME": "REALNAME",
+							"TYPE1": "TYPE1",
+							"VALUESTRING1": "VALUESTRING1",
+							"VALUE1": "VALUE1"
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "D1_Hana_MEDIAPROPS",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "D1_Azure_mediaprops",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

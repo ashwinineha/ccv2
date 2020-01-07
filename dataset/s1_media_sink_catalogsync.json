@@ -1,0 +1,19 @@
+{
+	"name": "s1_media_sink_catalogsync",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "s1_blob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "catalogsync",
+				"container": "sys-master-catalogsync"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

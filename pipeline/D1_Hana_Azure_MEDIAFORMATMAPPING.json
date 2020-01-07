@@ -1,0 +1,68 @@
+{
+	"name": "D1_Hana_Azure_MEDIAFORMATMAPPING",
+	"properties": {
+		"activities": [
+			{
+				"name": "HanaToAzureCopy",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RelationalSource",
+						"query": "SELECT * FROM HYB.MEDIAFORMATMAPPING"
+					},
+					"sink": {
+						"type": "SqlSink",
+						"writeBatchSize": 10000,
+						"preCopyScript": {
+							"value": "TRUNCATE TABLE [dbo].[MEDIAFORMATMAPPING]",
+							"type": "Expression"
+						}
+					},
+					"enableStaging": false,
+					"parallelCopies": 4,
+					"dataIntegrationUnits": 4,
+					"translator": {
+						"type": "TabularTranslator",
+						"columnMappings": {
+							"HJMPTS": "hjmpTS",
+							"CREATEDTS": "createdTS",
+							"MODIFIEDTS": "modifiedTS",
+							"TYPEPKSTRING": "TypePkString",
+							"OWNERPKSTRING": "OwnerPkString",
+							"PK": "PK",
+							"SEALED": "sealed",
+							"P_SOURCE": "p_source",
+							"P_TARGET": "p_target",
+							"P_MEDIACONTEXT": "p_mediacontext",
+							"ACLTS": "aCLTS",
+							"PROPTS": "propTS"
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "D1_Hana_MEDIAFORMATMAPPING",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "D1_Azure_mediaformatmapping",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

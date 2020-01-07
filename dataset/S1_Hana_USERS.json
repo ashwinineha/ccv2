@@ -1,0 +1,167 @@
+{
+	"name": "S1_Hana_USERS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "s1_hana",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RelationalTable",
+		"structure": [
+			{
+				"name": "HJMPTS"
+			},
+			{
+				"name": "CREATEDTS"
+			},
+			{
+				"name": "MODIFIEDTS"
+			},
+			{
+				"name": "TYPEPKSTRING"
+			},
+			{
+				"name": "OWNERPKSTRING"
+			},
+			{
+				"name": "PK"
+			},
+			{
+				"name": "P_DESCRIPTION"
+			},
+			{
+				"name": "P_NAME"
+			},
+			{
+				"name": "P_UID"
+			},
+			{
+				"name": "P_PROFILEPICTURE"
+			},
+			{
+				"name": "P_BACKOFFICELOGINDISABLED"
+			},
+			{
+				"name": "P_DEFAULTPAYMENTADDRESS"
+			},
+			{
+				"name": "P_DEFAULTSHIPMENTADDRESS"
+			},
+			{
+				"name": "P_PASSWORDENCODING"
+			},
+			{
+				"name": "PASSWD"
+			},
+			{
+				"name": "P_PASSWORDANSWER"
+			},
+			{
+				"name": "P_PASSWORDQUESTION"
+			},
+			{
+				"name": "P_SESSIONLANGUAGE"
+			},
+			{
+				"name": "P_SESSIONCURRENCY"
+			},
+			{
+				"name": "P_LOGINDISABLED"
+			},
+			{
+				"name": "P_LASTLOGIN"
+			},
+			{
+				"name": "P_HMCLOGINDISABLED"
+			},
+			{
+				"name": "P_USERPROFILE"
+			},
+			{
+				"name": "P_EUROPE1PRICEFACTORY_UDG"
+			},
+			{
+				"name": "P_EUROPE1PRICEFACTORY_UPG"
+			},
+			{
+				"name": "P_EUROPE1PRICEFACTORY_UTG"
+			},
+			{
+				"name": "P_AUTHORIZEDTOUNLOCKPAGES"
+			},
+			{
+				"name": "ACLTS"
+			},
+			{
+				"name": "PROPTS"
+			},
+			{
+				"name": "P_SAPID"
+			},
+			{
+				"name": "P_PHONENUM"
+			},
+			{
+				"name": "P_EMAIL"
+			},
+			{
+				"name": "P_CUSTOMERID"
+			},
+			{
+				"name": "P_PREVIEWCATALOGVERSIONS"
+			},
+			{
+				"name": "P_TITLE"
+			},
+			{
+				"name": "P_DEFAULTPAYMENTINFO"
+			},
+			{
+				"name": "P_TOKEN"
+			},
+			{
+				"name": "P_ORIGINALUID"
+			},
+			{
+				"name": "P_TYPE"
+			},
+			{
+				"name": "P_SAPCONSUMERID"
+			},
+			{
+				"name": "P_SAPCONTACTID"
+			},
+			{
+				"name": "P_SAPISREPLICATED"
+			},
+			{
+				"name": "P_SAPREPLICATIONINFO"
+			},
+			{
+				"name": "P_ACTIVE"
+			},
+			{
+				"name": "P_DEFAULTB2BUNIT"
+			},
+			{
+				"name": "P_SENDWELCOMEEMAIL"
+			},
+			{
+				"name": "P_WELCOMEEMAILSENT"
+			},
+			{
+				"name": "P_ONBOARDINGTOKEN"
+			},
+			{
+				"name": "SEALED"
+			},
+			{
+				"name": "P_RETENTIONSTATE"
+			},
+			{
+				"name": "P_DEACTIVATIONDATE"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
