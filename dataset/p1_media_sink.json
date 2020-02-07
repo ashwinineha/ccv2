@@ -2,14 +2,11 @@
 	"name": "p1_media_sink",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "s1_blob",
+			"referenceName": "p1_blob",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
 			"container": {
-				"type": "string"
-			},
-			"directory": {
 				"type": "string"
 			}
 		},
@@ -18,8 +15,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "@dataset().directory",
-				"container": "@dataset().container"
+				"container": {
+					"value": "@dataset().container",
+					"type": "Expression"
+				}
 			}
 		}
 	},
