@@ -1,0 +1,48 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "ixom-imp-df"
+		},
+		"ccv1_media_password": {
+			"value": ""
+		},
+		"d1_azure_connectionString": {
+			"value": ""
+		},
+		"d1_hana_connectionString": {
+			"value": ""
+		},
+		"p1_azure_connectionString": {
+			"value": ""
+		},
+		"p1_blob_connectionString": {
+			"value": ""
+		},
+		"p1_hana_connectionString": {
+			"value": ""
+		},
+		"s1_azure_connectionString": {
+			"value": ""
+		},
+		"s1_blob_connectionString": {
+			"value": ""
+		},
+		"s1_hana_connectionString": {
+			"value": ""
+		},
+		"ccv1_media_properties_typeProperties_host": {
+			"value": "100.101.1.4"
+		},
+		"ccv1_media_properties_typeProperties_userName": {
+			"value": "migrate"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

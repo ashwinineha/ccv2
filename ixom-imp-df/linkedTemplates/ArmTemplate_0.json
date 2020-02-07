@@ -1,0 +1,1069 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ixom-imp-df"
+		},
+		"ccv1_media_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ccv1_media'"
+		},
+		"d1_azure_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'd1_azure'"
+		},
+		"d1_hana_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'd1_hana'"
+		},
+		"p1_azure_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'p1_azure'"
+		},
+		"p1_blob_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'p1_blob'"
+		},
+		"p1_hana_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'p1_hana'"
+		},
+		"s1_azure_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 's1_azure'"
+		},
+		"s1_blob_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 's1_blob'"
+		},
+		"s1_hana_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 's1_hana'"
+		},
+		"ccv1_media_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "100.101.1.4"
+		},
+		"ccv1_media_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "migrate"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/IXOMIR')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ccv1_media')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Sftp",
+				"typeProperties": {
+					"host": "[parameters('ccv1_media_properties_typeProperties_host')]",
+					"port": 22,
+					"skipHostKeyValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('ccv1_media_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ccv1_media_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IXOMIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IXOMIR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/d1_azure')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('d1_azure_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "IXOMIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IXOMIR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/d1_hana')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SapHana",
+				"typeProperties": {
+					"connectionString": "[parameters('d1_hana_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "IXOMIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IXOMIR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/p1_azure')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('p1_azure_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "IXOMIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IXOMIR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/p1_blob')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('p1_blob_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "IXOMIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IXOMIR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/p1_hana')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SapHana",
+				"typeProperties": {
+					"connectionString": "[parameters('p1_hana_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "IXOMIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IXOMIR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_azure')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('s1_azure_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "IXOMIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IXOMIR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_blob')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('s1_blob_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "IXOMIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IXOMIR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_hana')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SapHana",
+				"typeProperties": {
+					"connectionString": "[parameters('s1_hana_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "IXOMIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IXOMIR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/D1_Azure_mediaformatmapping')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "d1_azure",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"structure": [
+					{
+						"name": "hjmpTS"
+					},
+					{
+						"name": "createdTS"
+					},
+					{
+						"name": "modifiedTS"
+					},
+					{
+						"name": "TypePkString"
+					},
+					{
+						"name": "OwnerPkString"
+					},
+					{
+						"name": "PK"
+					},
+					{
+						"name": "sealed"
+					},
+					{
+						"name": "p_source"
+					},
+					{
+						"name": "p_target"
+					},
+					{
+						"name": "p_mediacontext"
+					},
+					{
+						"name": "aCLTS"
+					},
+					{
+						"name": "propTS"
+					}
+				],
+				"typeProperties": {
+					"tableName": "mediaformatmapping"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/d1_azure')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/D1_Azure_mediametadata')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "d1_azure",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"structure": [
+					{
+						"name": "hjmpTS"
+					},
+					{
+						"name": "createdTS"
+					},
+					{
+						"name": "modifiedTS"
+					},
+					{
+						"name": "TypePkString"
+					},
+					{
+						"name": "OwnerPkString"
+					},
+					{
+						"name": "PK"
+					},
+					{
+						"name": "sealed"
+					},
+					{
+						"name": "p_code"
+					},
+					{
+						"name": "p_value"
+					},
+					{
+						"name": "p_groupname"
+					},
+					{
+						"name": "p_media"
+					},
+					{
+						"name": "aCLTS"
+					},
+					{
+						"name": "propTS"
+					}
+				],
+				"typeProperties": {
+					"tableName": "mediametadata"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/d1_azure')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/D1_Azure_mediaprops')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "d1_azure",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"structure": [
+					{
+						"name": "hjmpTS"
+					},
+					{
+						"name": "ITEMPK"
+					},
+					{
+						"name": "ITEMTYPEPK"
+					},
+					{
+						"name": "NAME"
+					},
+					{
+						"name": "LANGPK"
+					},
+					{
+						"name": "REALNAME"
+					},
+					{
+						"name": "TYPE1"
+					},
+					{
+						"name": "VALUESTRING1"
+					},
+					{
+						"name": "VALUE1"
+					}
+				],
+				"typeProperties": {
+					"tableName": "mediaprops"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/d1_azure')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/D1_Hana_MEDIAFORMATMAPPING')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "d1_hana",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RelationalTable",
+				"structure": [
+					{
+						"name": "HJMPTS"
+					},
+					{
+						"name": "CREATEDTS"
+					},
+					{
+						"name": "MODIFIEDTS"
+					},
+					{
+						"name": "TYPEPKSTRING"
+					},
+					{
+						"name": "OWNERPKSTRING"
+					},
+					{
+						"name": "PK"
+					},
+					{
+						"name": "P_SOURCE"
+					},
+					{
+						"name": "P_TARGET"
+					},
+					{
+						"name": "P_MEDIACONTEXT"
+					},
+					{
+						"name": "ACLTS"
+					},
+					{
+						"name": "PROPTS"
+					},
+					{
+						"name": "SEALED"
+					}
+				],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/d1_hana')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/D1_Hana_MEDIAMETADATA')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "d1_hana",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RelationalTable",
+				"structure": [
+					{
+						"name": "HJMPTS"
+					},
+					{
+						"name": "CREATEDTS"
+					},
+					{
+						"name": "MODIFIEDTS"
+					},
+					{
+						"name": "TYPEPKSTRING"
+					},
+					{
+						"name": "OWNERPKSTRING"
+					},
+					{
+						"name": "PK"
+					},
+					{
+						"name": "P_CODE"
+					},
+					{
+						"name": "P_VALUE"
+					},
+					{
+						"name": "P_GROUPNAME"
+					},
+					{
+						"name": "P_MEDIA"
+					},
+					{
+						"name": "ACLTS"
+					},
+					{
+						"name": "PROPTS"
+					},
+					{
+						"name": "SEALED"
+					}
+				],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/d1_hana')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/D1_Hana_MEDIAPROPS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "d1_hana",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RelationalTable",
+				"structure": [
+					{
+						"name": "HJMPTS"
+					},
+					{
+						"name": "ITEMPK"
+					},
+					{
+						"name": "ITEMTYPEPK"
+					},
+					{
+						"name": "NAME"
+					},
+					{
+						"name": "LANGPK"
+					},
+					{
+						"name": "REALNAME"
+					},
+					{
+						"name": "TYPE1"
+					},
+					{
+						"name": "VALUESTRING1"
+					},
+					{
+						"name": "VALUE1"
+					}
+				],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/d1_hana')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S1_Azure_mediacontainer')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "s1_azure",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"structure": [
+					{
+						"name": "hjmpTS"
+					},
+					{
+						"name": "createdTS"
+					},
+					{
+						"name": "modifiedTS"
+					},
+					{
+						"name": "TypePkString"
+					},
+					{
+						"name": "OwnerPkString"
+					},
+					{
+						"name": "PK"
+					},
+					{
+						"name": "sealed"
+					},
+					{
+						"name": "p_qualifier"
+					},
+					{
+						"name": "p_catalogversion"
+					},
+					{
+						"name": "p_conversiongroup"
+					},
+					{
+						"name": "aCLTS"
+					},
+					{
+						"name": "propTS"
+					}
+				],
+				"typeProperties": {
+					"tableName": "mediacontainer"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/s1_azure')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S1_Azure_medias')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "s1_azure",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"structure": [
+					{
+						"name": "hjmpTS"
+					},
+					{
+						"name": "createdTS"
+					},
+					{
+						"name": "modifiedTS"
+					},
+					{
+						"name": "TypePkString"
+					},
+					{
+						"name": "OwnerPkString"
+					},
+					{
+						"name": "PK"
+					},
+					{
+						"name": "sealed"
+					},
+					{
+						"name": "p_mime"
+					},
+					{
+						"name": "p_size"
+					},
+					{
+						"name": "p_datapk"
+					},
+					{
+						"name": "p_location"
+					},
+					{
+						"name": "p_locationhash"
+					},
+					{
+						"name": "p_realfilename"
+					},
+					{
+						"name": "p_code"
+					},
+					{
+						"name": "p_internalurl"
+					},
+					{
+						"name": "p_description"
+					},
+					{
+						"name": "p_alttext"
+					},
+					{
+						"name": "p_removable"
+					},
+					{
+						"name": "p_mediaformat"
+					},
+					{
+						"name": "p_folder"
+					},
+					{
+						"name": "p_subfolderpath"
+					},
+					{
+						"name": "p_mediacontainer"
+					},
+					{
+						"name": "p_catalog"
+					},
+					{
+						"name": "p_catalogversion"
+					},
+					{
+						"name": "p_metadatadatapk"
+					},
+					{
+						"name": "p_originaldatapk"
+					},
+					{
+						"name": "p_original"
+					},
+					{
+						"name": "aCLTS"
+					},
+					{
+						"name": "propTS"
+					},
+					{
+						"name": "p_outputmimetype"
+					},
+					{
+						"name": "p_inputmimetype"
+					},
+					{
+						"name": "p_itemtimestamp"
+					},
+					{
+						"name": "p_format"
+					},
+					{
+						"name": "p_sourceitem"
+					},
+					{
+						"name": "p_fieldseparator"
+					},
+					{
+						"name": "p_quotecharacter"
+					},
+					{
+						"name": "p_commentcharacter"
+					},
+					{
+						"name": "p_encoding"
+					},
+					{
+						"name": "p_linestoskip"
+					},
+					{
+						"name": "p_removeonsuccess"
+					},
+					{
+						"name": "p_zipentry"
+					},
+					{
+						"name": "p_extractionid"
+					},
+					{
+						"name": "p_allowscriptevaluation"
+					},
+					{
+						"name": "p_auditrootitem"
+					},
+					{
+						"name": "p_auditreportconfig"
+					},
+					{
+						"name": "p_scheduledcount"
+					},
+					{
+						"name": "p_cronjobpos"
+					},
+					{
+						"name": "p_cronjob"
+					},
+					{
+						"name": "p_icon"
+					},
+					{
+						"name": "p_compiledreport"
+					},
+					{
+						"name": "p_barcodetext"
+					},
+					{
+						"name": "p_barcodetype"
+					},
+					{
+						"name": "p_contextitem"
+					},
+					{
+						"name": "p_deeplinkurl"
+					},
+					{
+						"name": "p_message"
+					},
+					{
+						"name": "p_storefrontstatus"
+					},
+					{
+						"name": "p_documenttype"
+					},
+					{
+						"name": "p_reviewdate"
+					},
+					{
+						"name": "p_lastreviewdate"
+					},
+					{
+						"name": "p_urlonly"
+					},
+					{
+						"name": "p_productcountry"
+					},
+					{
+						"name": "p_displaydate"
+					},
+					{
+						"name": "p_batchnumber"
+					}
+				],
+				"typeProperties": {
+					"tableName": "medias"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/s1_azure')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S1_Azure_users')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "s1_azure",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"structure": [
+					{
+						"name": "hjmpTS"
+					},
+					{
+						"name": "createdTS"
+					},
+					{
+						"name": "modifiedTS"
+					},
+					{
+						"name": "TypePkString"
+					},
+					{
+						"name": "OwnerPkString"
+					},
+					{
+						"name": "PK"
+					},
+					{
+						"name": "sealed"
+					},
+					{
+						"name": "p_description"
+					},
+					{
+						"name": "p_name"
+					},
+					{
+						"name": "p_uid"
+					},
+					{
+						"name": "p_profilepicture"
+					},
+					{
+						"name": "p_backofficelogindisabled"
+					},
+					{
+						"name": "p_defaultpaymentaddress"
+					},
+					{
+						"name": "p_defaultshipmentaddress"
+					},
+					{
+						"name": "p_passwordencoding"
+					},
+					{
+						"name": "passwd"
+					},
+					{
+						"name": "p_passwordanswer"
+					},
+					{
+						"name": "p_passwordquestion"
+					},
+					{
+						"name": "p_sessionlanguage"
+					},
+					{
+						"name": "p_sessioncurrency"
+					},
+					{
+						"name": "p_logindisabled"
+					},
+					{
+						"name": "p_lastlogin"
+					},
+					{
+						"name": "p_hmclogindisabled"
+					},
+					{
+						"name": "p_retentionstate"
+					},
+					{
+						"name": "p_userprofile"
+					},
+					{
+						"name": "p_deactivationdate"
+					},
+					{
+						"name": "p_europe1pricefactory_udg"
+					},
+					{
+						"name": "p_europe1pricefactory_upg"
+					},
+					{
+						"name": "p_europe1pricefactory_utg"
+					},
+					{
+						"name": "p_authorizedtounlockpages"
+					},
+					{
+						"name": "aCLTS"
+					},
+					{
+						"name": "propTS"
+					},
+					{
+						"name": "p_sapid"
+					},
+					{
+						"name": "p_phonenum"
+					},
+					{
+						"name": "p_email"
+					},
+					{
+						"name": "p_customerid"
+					},
+					{
+						"name": "p_previewcatalogversions"
+					},
+					{
+						"name": "p_title"
+					},
+					{
+						"name": "p_defaultpaymentinfo"
+					},
+					{
+						"name": "p_token"
+					},
+					{
+						"name": "p_originaluid"
+					},
+					{
+						"name": "p_type"
+					},
+					{
+						"name": "p_sapconsumerid"
+					},
+					{
+						"name": "p_sapcontactid"
+					},
+					{
+						"name": "p_sapisreplicated"
+					},
+					{
+						"name": "p_sapreplicationinfo"
+					},
+					{
+						"name": "p_sendwelcomeemail"
+					},
+					{
+						"name": "p_welcomeemailsent"
+					},
+					{
+						"name": "p_onboardingtoken"
+					},
+					{
+						"name": "p_active"
+					},
+					{
+						"name": "p_defaultb2bunit"
+					}
+				],
+				"typeProperties": {
+					"tableName": "users"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/s1_azure')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S1_Hana_MEDIACONTAINER')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "s1_hana",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RelationalTable",
+				"structure": [
+					{
+						"name": "HJMPTS"
+					},
+					{
+						"name": "CREATEDTS"
+					},
+					{
+						"name": "MODIFIEDTS"
+					},
+					{
+						"name": "TYPEPKSTRING"
+					},
+					{
+						"name": "OWNERPKSTRING"
+					},
+					{
+						"name": "PK"
+					},
+					{
+						"name": "P_QUALIFIER"
+					},
+					{
+						"name": "P_CATALOGVERSION"
+					},
+					{
+						"name": "P_CONVERSIONGROUP"
+					},
+					{
+						"name": "ACLTS"
+					},
+					{
+						"name": "PROPTS"
+					},
+					{
+						"name": "SEALED"
+					}
+				],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/s1_hana')]"
+			]
+		}
+	]
+}

@@ -1,0 +1,743 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ixom-imp-df"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/S1_Hana_MEDIAS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "s1_hana",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RelationalTable",
+				"structure": [
+					{
+						"name": "HJMPTS"
+					},
+					{
+						"name": "CREATEDTS"
+					},
+					{
+						"name": "MODIFIEDTS"
+					},
+					{
+						"name": "TYPEPKSTRING"
+					},
+					{
+						"name": "OWNERPKSTRING"
+					},
+					{
+						"name": "PK"
+					},
+					{
+						"name": "P_MIME"
+					},
+					{
+						"name": "P_SIZE"
+					},
+					{
+						"name": "P_DATAPK"
+					},
+					{
+						"name": "P_LOCATION"
+					},
+					{
+						"name": "P_LOCATIONHASH"
+					},
+					{
+						"name": "P_REALFILENAME"
+					},
+					{
+						"name": "P_CODE"
+					},
+					{
+						"name": "P_INTERNALURL"
+					},
+					{
+						"name": "P_DESCRIPTION"
+					},
+					{
+						"name": "P_ALTTEXT"
+					},
+					{
+						"name": "P_REMOVABLE"
+					},
+					{
+						"name": "P_MEDIAFORMAT"
+					},
+					{
+						"name": "P_FOLDER"
+					},
+					{
+						"name": "P_SUBFOLDERPATH"
+					},
+					{
+						"name": "P_MEDIACONTAINER"
+					},
+					{
+						"name": "P_CATALOG"
+					},
+					{
+						"name": "P_CATALOGVERSION"
+					},
+					{
+						"name": "P_METADATADATAPK"
+					},
+					{
+						"name": "P_ORIGINALDATAPK"
+					},
+					{
+						"name": "P_ORIGINAL"
+					},
+					{
+						"name": "ACLTS"
+					},
+					{
+						"name": "PROPTS"
+					},
+					{
+						"name": "P_OUTPUTMIMETYPE"
+					},
+					{
+						"name": "P_INPUTMIMETYPE"
+					},
+					{
+						"name": "P_ITEMTIMESTAMP"
+					},
+					{
+						"name": "P_FORMAT"
+					},
+					{
+						"name": "P_SOURCEITEM"
+					},
+					{
+						"name": "P_FIELDSEPARATOR"
+					},
+					{
+						"name": "P_QUOTECHARACTER"
+					},
+					{
+						"name": "P_COMMENTCHARACTER"
+					},
+					{
+						"name": "P_ENCODING"
+					},
+					{
+						"name": "P_LINESTOSKIP"
+					},
+					{
+						"name": "P_REMOVEONSUCCESS"
+					},
+					{
+						"name": "P_ZIPENTRY"
+					},
+					{
+						"name": "P_ALLOWSCRIPTEVALUATION"
+					},
+					{
+						"name": "P_SCHEDULEDCOUNT"
+					},
+					{
+						"name": "P_CRONJOBPOS"
+					},
+					{
+						"name": "P_CRONJOB"
+					},
+					{
+						"name": "P_BARCODETEXT"
+					},
+					{
+						"name": "P_BARCODETYPE"
+					},
+					{
+						"name": "P_CONTEXTITEM"
+					},
+					{
+						"name": "P_DEEPLINKURL"
+					},
+					{
+						"name": "P_ICON"
+					},
+					{
+						"name": "P_COMPILEDREPORT"
+					},
+					{
+						"name": "P_MESSAGE"
+					},
+					{
+						"name": "P_STOREFRONTSTATUS"
+					},
+					{
+						"name": "P_DOCUMENTTYPE"
+					},
+					{
+						"name": "P_REVIEWDATE"
+					},
+					{
+						"name": "P_URLONLY"
+					},
+					{
+						"name": "P_DISPLAYDATE"
+					},
+					{
+						"name": "P_BATCHNUMBER"
+					},
+					{
+						"name": "P_PRODUCTCOUNTRY"
+					},
+					{
+						"name": "P_LASTREVIEWDATE"
+					},
+					{
+						"name": "SEALED"
+					},
+					{
+						"name": "P_EXTRACTIONID"
+					},
+					{
+						"name": "P_AUDITROOTITEM"
+					},
+					{
+						"name": "P_AUDITREPORTCONFIG"
+					}
+				],
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S1_Hana_USERS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "s1_hana",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RelationalTable",
+				"structure": [
+					{
+						"name": "HJMPTS"
+					},
+					{
+						"name": "CREATEDTS"
+					},
+					{
+						"name": "MODIFIEDTS"
+					},
+					{
+						"name": "TYPEPKSTRING"
+					},
+					{
+						"name": "OWNERPKSTRING"
+					},
+					{
+						"name": "PK"
+					},
+					{
+						"name": "P_DESCRIPTION"
+					},
+					{
+						"name": "P_NAME"
+					},
+					{
+						"name": "P_UID"
+					},
+					{
+						"name": "P_PROFILEPICTURE"
+					},
+					{
+						"name": "P_BACKOFFICELOGINDISABLED"
+					},
+					{
+						"name": "P_DEFAULTPAYMENTADDRESS"
+					},
+					{
+						"name": "P_DEFAULTSHIPMENTADDRESS"
+					},
+					{
+						"name": "P_PASSWORDENCODING"
+					},
+					{
+						"name": "PASSWD"
+					},
+					{
+						"name": "P_PASSWORDANSWER"
+					},
+					{
+						"name": "P_PASSWORDQUESTION"
+					},
+					{
+						"name": "P_SESSIONLANGUAGE"
+					},
+					{
+						"name": "P_SESSIONCURRENCY"
+					},
+					{
+						"name": "P_LOGINDISABLED"
+					},
+					{
+						"name": "P_LASTLOGIN"
+					},
+					{
+						"name": "P_HMCLOGINDISABLED"
+					},
+					{
+						"name": "P_USERPROFILE"
+					},
+					{
+						"name": "P_EUROPE1PRICEFACTORY_UDG"
+					},
+					{
+						"name": "P_EUROPE1PRICEFACTORY_UPG"
+					},
+					{
+						"name": "P_EUROPE1PRICEFACTORY_UTG"
+					},
+					{
+						"name": "P_AUTHORIZEDTOUNLOCKPAGES"
+					},
+					{
+						"name": "ACLTS"
+					},
+					{
+						"name": "PROPTS"
+					},
+					{
+						"name": "P_SAPID"
+					},
+					{
+						"name": "P_PHONENUM"
+					},
+					{
+						"name": "P_EMAIL"
+					},
+					{
+						"name": "P_CUSTOMERID"
+					},
+					{
+						"name": "P_PREVIEWCATALOGVERSIONS"
+					},
+					{
+						"name": "P_TITLE"
+					},
+					{
+						"name": "P_DEFAULTPAYMENTINFO"
+					},
+					{
+						"name": "P_TOKEN"
+					},
+					{
+						"name": "P_ORIGINALUID"
+					},
+					{
+						"name": "P_TYPE"
+					},
+					{
+						"name": "P_SAPCONSUMERID"
+					},
+					{
+						"name": "P_SAPCONTACTID"
+					},
+					{
+						"name": "P_SAPISREPLICATED"
+					},
+					{
+						"name": "P_SAPREPLICATIONINFO"
+					},
+					{
+						"name": "P_ACTIVE"
+					},
+					{
+						"name": "P_DEFAULTB2BUNIT"
+					},
+					{
+						"name": "P_SENDWELCOMEEMAIL"
+					},
+					{
+						"name": "P_WELCOMEEMAILSENT"
+					},
+					{
+						"name": "P_ONBOARDINGTOKEN"
+					},
+					{
+						"name": "SEALED"
+					},
+					{
+						"name": "P_RETENTIONSTATE"
+					},
+					{
+						"name": "P_DEACTIVATIONDATE"
+					}
+				],
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/d1_azure')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "d1_azure",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/d1_hana')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "d1_hana",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SapHanaTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/p1_azure')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "p1_azure",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/p1_hana')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "p1_hana",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SapHanaTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/p1_media_sink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "p1_blob",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"container": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": {
+							"value": "@dataset().container",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/p1_media_source')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ccv1_media",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "SftpLocation"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_azure')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "s1_azure",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_hana')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "s1_hana",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SapHanaTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_media_sink_backofficeconfiguration')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "s1_blob",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "backofficeconfiguration",
+						"container": "sys-master-backofficeconfiguration"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_media_sink_catalogsync')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "s1_blob",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "catalogsync",
+						"container": "sys-master-catalogsync"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_media_sink_cronjob')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "s1_blob",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "cronjob",
+						"container": "sys-master-cronjob"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_media_sink_documents')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "s1_blob",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "documents",
+						"container": "sys-master-documents"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_media_sink_email_body')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "s1_blob",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "email-body",
+						"container": "sys-master-email-body"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_media_sink_image')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "s1_blob",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "images",
+						"container": "sys-master-images"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_media_sink_impex')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "s1_blob",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "impex",
+						"container": "sys-master-impex"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_media_sink_jasperreports')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "s1_blob",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "jasperreports",
+						"container": "sys-master-jasperreports"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_media_sink_root')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "s1_blob",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "sys-master-root"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_media_source')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ccv1_media",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "SftpLocation",
+						"folderPath": "/opt/nfs_shares/sy2-ixo-ixm-s1-nfs-001/hybris-media/sys_master"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

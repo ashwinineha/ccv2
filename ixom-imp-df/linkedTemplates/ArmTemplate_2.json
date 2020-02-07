@@ -1,0 +1,1686 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ixom-imp-df"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_media_source_backofficeconfiguration')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ccv1_media",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "SftpLocation",
+						"folderPath": "/opt/nfs_shares/sy2-ixo-ixm-s1-nfs-001/hybris-media/sys_master/backofficeconfiguration"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_media_source_cronjob')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ccv1_media",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "SftpLocation",
+						"folderPath": "/opt/nfs_shares/sy2-ixo-ixm-s1-nfs-001/hybris-media/sys_master/cronjob"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/D1_Hana_Azure_MEDIAFORMATMAPPING')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "HanaToAzureCopy",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RelationalSource",
+								"query": "SELECT * FROM HYB.MEDIAFORMATMAPPING"
+							},
+							"sink": {
+								"type": "SqlSink",
+								"writeBatchSize": 10000,
+								"preCopyScript": {
+									"value": "TRUNCATE TABLE [dbo].[MEDIAFORMATMAPPING]",
+									"type": "Expression"
+								}
+							},
+							"enableStaging": false,
+							"parallelCopies": 4,
+							"dataIntegrationUnits": 4,
+							"translator": {
+								"type": "TabularTranslator",
+								"columnMappings": {
+									"HJMPTS": "hjmpTS",
+									"CREATEDTS": "createdTS",
+									"MODIFIEDTS": "modifiedTS",
+									"TYPEPKSTRING": "TypePkString",
+									"OWNERPKSTRING": "OwnerPkString",
+									"PK": "PK",
+									"SEALED": "sealed",
+									"P_SOURCE": "p_source",
+									"P_TARGET": "p_target",
+									"P_MEDIACONTEXT": "p_mediacontext",
+									"ACLTS": "aCLTS",
+									"PROPTS": "propTS"
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "D1_Hana_MEDIAFORMATMAPPING",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "D1_Azure_mediaformatmapping",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/D1_Hana_Azure_MEDIAMETADATA')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "HanaToAzureCopy",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RelationalSource",
+								"query": "SELECT * FROM HYB.MEDIAMETADATA"
+							},
+							"sink": {
+								"type": "SqlSink",
+								"writeBatchSize": 10000,
+								"preCopyScript": {
+									"value": "TRUNCATE TABLE [dbo].[MEDIAMETADATA]",
+									"type": "Expression"
+								}
+							},
+							"enableStaging": false,
+							"parallelCopies": 4,
+							"dataIntegrationUnits": 4,
+							"translator": {
+								"type": "TabularTranslator",
+								"columnMappings": {
+									"HJMPTS": "hjmpTS",
+									"CREATEDTS": "createdTS",
+									"MODIFIEDTS": "modifiedTS",
+									"TYPEPKSTRING": "TypePkString",
+									"OWNERPKSTRING": "OwnerPkString",
+									"PK": "PK",
+									"SEALED": "sealed",
+									"P_CODE": "p_code",
+									"P_VALUE": "p_value",
+									"P_GROUPNAME": "p_groupname",
+									"P_MEDIA": "p_media",
+									"ACLTS": "aCLTS",
+									"PROPTS": "propTS"
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "D1_Hana_MEDIAMETADATA",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "D1_Azure_mediametadata",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/D1_Hana_Azure_MEDIAPROPS')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "HanaToAzureCopy",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RelationalSource",
+								"query": "SELECT * FROM HYB.MEDIAPROPS"
+							},
+							"sink": {
+								"type": "SqlSink",
+								"writeBatchSize": 10000,
+								"preCopyScript": {
+									"value": "TRUNCATE TABLE [dbo].[MEDIAPROPS]",
+									"type": "Expression"
+								}
+							},
+							"enableStaging": false,
+							"parallelCopies": 4,
+							"dataIntegrationUnits": 4,
+							"translator": {
+								"type": "TabularTranslator",
+								"columnMappings": {
+									"HJMPTS": "hjmpTS",
+									"ITEMPK": "ITEMPK",
+									"ITEMTYPEPK": "ITEMTYPEPK",
+									"NAME": "NAME",
+									"LANGPK": "LANGPK",
+									"REALNAME": "REALNAME",
+									"TYPE1": "TYPE1",
+									"VALUESTRING1": "VALUESTRING1",
+									"VALUE1": "VALUE1"
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "D1_Hana_MEDIAPROPS",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "D1_Azure_mediaprops",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S1_Hana_Azure_MEDIACONTAINER')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "HanaToAzureCopy",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"retry": 10,
+							"retryIntervalInSeconds": 30
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RelationalSource",
+								"query": "SELECT * FROM HYB.MEDIACONTAINER"
+							},
+							"sink": {
+								"type": "SqlSink",
+								"writeBatchSize": 10000,
+								"preCopyScript": {
+									"value": "TRUNCATE TABLE [dbo].[MEDIACONTAINER]",
+									"type": "Expression"
+								}
+							},
+							"enableStaging": false,
+							"parallelCopies": 4,
+							"dataIntegrationUnits": 4,
+							"translator": {
+								"type": "TabularTranslator",
+								"columnMappings": {
+									"HJMPTS": "hjmpTS",
+									"CREATEDTS": "createdTS",
+									"MODIFIEDTS": "modifiedTS",
+									"TYPEPKSTRING": "TypePkString",
+									"OWNERPKSTRING": "OwnerPkString",
+									"PK": "PK",
+									"SEALED": "sealed",
+									"P_QUALIFIER": "p_qualifier",
+									"P_CATALOGVERSION": "p_catalogversion",
+									"P_CONVERSIONGROUP": "p_conversiongroup",
+									"ACLTS": "aCLTS",
+									"PROPTS": "propTS"
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "S1_Hana_MEDIACONTAINER",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "S1_Azure_mediacontainer",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S1_Hana_Azure_MEDIAS')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "HanaToAzureCopy",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"retry": 10,
+							"retryIntervalInSeconds": 30
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RelationalSource",
+								"query": "SELECT * FROM HYB.MEDIAS"
+							},
+							"sink": {
+								"type": "SqlSink",
+								"writeBatchSize": 10000,
+								"preCopyScript": {
+									"value": "TRUNCATE TABLE [dbo].[MEDIAS]",
+									"type": "Expression"
+								}
+							},
+							"enableStaging": false,
+							"parallelCopies": 4,
+							"dataIntegrationUnits": 4,
+							"translator": {
+								"type": "TabularTranslator",
+								"columnMappings": {
+									"HJMPTS": "hjmpTS",
+									"CREATEDTS": "createdTS",
+									"MODIFIEDTS": "modifiedTS",
+									"TYPEPKSTRING": "TypePkString",
+									"OWNERPKSTRING": "OwnerPkString",
+									"PK": "PK",
+									"SEALED": "sealed",
+									"P_MIME": "p_mime",
+									"P_SIZE": "p_size",
+									"P_DATAPK": "p_datapk",
+									"P_LOCATION": "p_location",
+									"P_LOCATIONHASH": "p_locationhash",
+									"P_REALFILENAME": "p_realfilename",
+									"P_CODE": "p_code",
+									"P_INTERNALURL": "p_internalurl",
+									"P_DESCRIPTION": "p_description",
+									"P_ALTTEXT": "p_alttext",
+									"P_REMOVABLE": "p_removable",
+									"P_MEDIAFORMAT": "p_mediaformat",
+									"P_FOLDER": "p_folder",
+									"P_SUBFOLDERPATH": "p_subfolderpath",
+									"P_MEDIACONTAINER": "p_mediacontainer",
+									"P_CATALOG": "p_catalog",
+									"P_CATALOGVERSION": "p_catalogversion",
+									"P_METADATADATAPK": "p_metadatadatapk",
+									"P_ORIGINALDATAPK": "p_originaldatapk",
+									"P_ORIGINAL": "p_original",
+									"ACLTS": "aCLTS",
+									"PROPTS": "propTS",
+									"P_OUTPUTMIMETYPE": "p_outputmimetype",
+									"P_INPUTMIMETYPE": "p_inputmimetype",
+									"P_ITEMTIMESTAMP": "p_itemtimestamp",
+									"P_FORMAT": "p_format",
+									"P_SOURCEITEM": "p_sourceitem",
+									"P_FIELDSEPARATOR": "p_fieldseparator",
+									"P_QUOTECHARACTER": "p_quotecharacter",
+									"P_COMMENTCHARACTER": "p_commentcharacter",
+									"P_ENCODING": "p_encoding",
+									"P_LINESTOSKIP": "p_linestoskip",
+									"P_REMOVEONSUCCESS": "p_removeonsuccess",
+									"P_ZIPENTRY": "p_zipentry",
+									"P_EXTRACTIONID": "p_extractionid",
+									"P_ALLOWSCRIPTEVALUATION": "p_allowscriptevaluation",
+									"P_AUDITROOTITEM": "p_auditrootitem",
+									"P_AUDITREPORTCONFIG": "p_auditreportconfig",
+									"P_SCHEDULEDCOUNT": "p_scheduledcount",
+									"P_CRONJOBPOS": "p_cronjobpos",
+									"P_CRONJOB": "p_cronjob",
+									"P_ICON": "p_icon",
+									"P_COMPILEDREPORT": "p_compiledreport",
+									"P_BARCODETEXT": "p_barcodetext",
+									"P_BARCODETYPE": "p_barcodetype",
+									"P_CONTEXTITEM": "p_contextitem",
+									"P_DEEPLINKURL": "p_deeplinkurl",
+									"P_MESSAGE": "p_message",
+									"P_STOREFRONTSTATUS": "p_storefrontstatus",
+									"P_DOCUMENTTYPE": "p_documenttype",
+									"P_REVIEWDATE": "p_reviewdate",
+									"P_LASTREVIEWDATE": "p_lastreviewdate",
+									"P_URLONLY": "p_urlonly",
+									"P_PRODUCTCOUNTRY": "p_productcountry",
+									"P_DISPLAYDATE": "p_displaydate",
+									"P_BATCHNUMBER": "p_batchnumber"
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "S1_Hana_MEDIAS",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "S1_Azure_medias",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/S1_Hana_Azure_USERS')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "HanaToAzureCopy",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"retry": 10,
+							"retryIntervalInSeconds": 30
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RelationalSource",
+								"query": "SELECT * FROM HYB.USERS"
+							},
+							"sink": {
+								"type": "SqlSink",
+								"writeBatchSize": 10000,
+								"preCopyScript": {
+									"value": "TRUNCATE TABLE [dbo].[USERS]",
+									"type": "Expression"
+								}
+							},
+							"enableStaging": false,
+							"parallelCopies": 4,
+							"dataIntegrationUnits": 4,
+							"translator": {
+								"type": "TabularTranslator",
+								"columnMappings": {
+									"HJMPTS": "hjmpTS",
+									"CREATEDTS": "createdTS",
+									"MODIFIEDTS": "modifiedTS",
+									"TYPEPKSTRING": "TypePkString",
+									"OWNERPKSTRING": "OwnerPkString",
+									"PK": "PK",
+									"SEALED": "sealed",
+									"P_DESCRIPTION": "p_description",
+									"P_NAME": "p_name",
+									"P_UID": "p_uid",
+									"P_PROFILEPICTURE": "p_profilepicture",
+									"P_BACKOFFICELOGINDISABLED": "p_backofficelogindisabled",
+									"P_DEFAULTPAYMENTADDRESS": "p_defaultpaymentaddress",
+									"P_DEFAULTSHIPMENTADDRESS": "p_defaultshipmentaddress",
+									"P_PASSWORDENCODING": "p_passwordencoding",
+									"PASSWD": "passwd",
+									"P_PASSWORDANSWER": "p_passwordanswer",
+									"P_PASSWORDQUESTION": "p_passwordquestion",
+									"P_SESSIONLANGUAGE": "p_sessionlanguage",
+									"P_SESSIONCURRENCY": "p_sessioncurrency",
+									"P_LOGINDISABLED": "p_logindisabled",
+									"P_LASTLOGIN": "p_lastlogin",
+									"P_HMCLOGINDISABLED": "p_hmclogindisabled",
+									"P_RETENTIONSTATE": "p_retentionstate",
+									"P_USERPROFILE": "p_userprofile",
+									"P_DEACTIVATIONDATE": "p_deactivationdate",
+									"P_EUROPE1PRICEFACTORY_UDG": "p_europe1pricefactory_udg",
+									"P_EUROPE1PRICEFACTORY_UPG": "p_europe1pricefactory_upg",
+									"P_EUROPE1PRICEFACTORY_UTG": "p_europe1pricefactory_utg",
+									"P_AUTHORIZEDTOUNLOCKPAGES": "p_authorizedtounlockpages",
+									"ACLTS": "aCLTS",
+									"PROPTS": "propTS",
+									"P_SAPID": "p_sapid",
+									"P_PHONENUM": "p_phonenum",
+									"P_EMAIL": "p_email",
+									"P_CUSTOMERID": "p_customerid",
+									"P_PREVIEWCATALOGVERSIONS": "p_previewcatalogversions",
+									"P_TITLE": "p_title",
+									"P_DEFAULTPAYMENTINFO": "p_defaultpaymentinfo",
+									"P_TOKEN": "p_token",
+									"P_ORIGINALUID": "p_originaluid",
+									"P_TYPE": "p_type",
+									"P_SAPCONSUMERID": "p_sapconsumerid",
+									"P_SAPCONTACTID": "p_sapcontactid",
+									"P_SAPISREPLICATED": "p_sapisreplicated",
+									"P_SAPREPLICATIONINFO": "p_sapreplicationinfo",
+									"P_SENDWELCOMEEMAIL": "p_sendwelcomeemail",
+									"P_WELCOMEEMAILSENT": "p_welcomeemailsent",
+									"P_ONBOARDINGTOKEN": "p_onboardingtoken",
+									"P_ACTIVE": "p_active",
+									"P_DEFAULTB2BUNIT": "p_defaultb2bunit"
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "S1_Hana_USERS",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "S1_Azure_users",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/d1_table_column_azure')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "LookupTableAndColumns",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select TABLE_NAME, COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH as CHAR_DATA_LENGTH,\nNUMERIC_PRECISION, NUMERIC_SCALE, DATETIME_PRECISION, CHARACTER_MAXIMUM_LENGTH as CLOB_DATA_LENGTH, ORDINAL_POSITION as COLUMN_POSITION, IS_NULLABLE\nfrom INFORMATION_SCHEMA.COLUMNS\nwhere TABLE_SCHEMA = '@{pipeline().parameters.schemaName}' and @{pipeline().parameters.tableNameSelector}\norder by TABLE_NAME;",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "d1_azure",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					}
+				],
+				"parameters": {
+					"tableNameSelector": {
+						"type": "string"
+					},
+					"schemaName": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/d1_table_column_hana')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "LookupTableAndColumns",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapHanaSource",
+								"query": {
+									"value": "select table_name,column_name, data_type_name as DATA_TYPE, LENGTH as CHAR_DATA_LENGTH, position as COLUMN_POSITION \nfrom table_columns where schema_name = '@{pipeline().parameters.schemaName}' and @{pipeline().parameters.tableNameSelector}\nORDER BY TABLE_NAME;",
+									"type": "Expression"
+								},
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "d1_hana",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					}
+				],
+				"parameters": {
+					"tableNameSelector": {
+						"type": "string"
+					},
+					"schemaName": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/p1_media_copy')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Image",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-p1-nfs-001/hybris-media/sys_master/images*"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "p1_media_source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "p1_media_sink",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": "sys-master-images"
+								}
+							}
+						]
+					},
+					{
+						"name": "Copy cronjob",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-p1-nfs-001/hybris-media/sys_master/cronjob*"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "p1_media_source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "p1_media_sink",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": "sys-master-cronjob"
+								}
+							}
+						]
+					},
+					{
+						"name": "Copy impex",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-p1-nfs-001/hybris-media/sys_master/impex*"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "p1_media_source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "p1_media_sink",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": "sys-master-impex"
+								}
+							}
+						]
+					},
+					{
+						"name": "Copy jasperreports",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-p1-nfs-001/hybris-media/sys_master/jasperreport*"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "p1_media_source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "p1_media_sink",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": "sys-master-jasperreports"
+								}
+							}
+						]
+					},
+					{
+						"name": "Copy backofficeconfiguration",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-p1-nfs-001/hybris-media/sys_master/backofficeconfiguratio*"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "p1_media_source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "p1_media_sink",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": "sys-master-backofficeconfiguration"
+								}
+							}
+						]
+					},
+					{
+						"name": "Copy catalogsync",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-p1-nfs-001/hybris-media/sys_master/catalog*"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "p1_media_source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "p1_media_sink",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": "sys-master-catalogsync"
+								}
+							}
+						]
+					},
+					{
+						"name": "Copy documents",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-p1-nfs-001/hybris-media/sys_master/document*"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "p1_media_source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "p1_media_sink",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": "sys-master-documents"
+								}
+							}
+						]
+					},
+					{
+						"name": "Copy email-body",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-p1-nfs-001/hybris-media/sys_master/email*"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "s1_media_source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "p1_media_sink",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": "sys-master-email-body"
+								}
+							}
+						]
+					},
+					{
+						"name": "Copy root",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-p1-nfs-001/hybris-media/sys_master/h*"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "p1_media_source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "p1_media_sink",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": "sys-master-root"
+								}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/p1_table_column_azure')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "LookupTableAndColumns",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select TABLE_NAME, COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH as CHAR_DATA_LENGTH,\nNUMERIC_PRECISION, NUMERIC_SCALE, DATETIME_PRECISION, CHARACTER_MAXIMUM_LENGTH as CLOB_DATA_LENGTH, ORDINAL_POSITION as COLUMN_POSITION, IS_NULLABLE\nfrom INFORMATION_SCHEMA.COLUMNS\nwhere TABLE_SCHEMA = '@{pipeline().parameters.schemaName}' and @{pipeline().parameters.tableNameSelector}\norder by TABLE_NAME;",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "p1_azure",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					}
+				],
+				"parameters": {
+					"tableNameSelector": {
+						"type": "string"
+					},
+					"schemaName": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/p1_table_column_hana')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "LookupTableAndColumns",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapHanaSource",
+								"query": {
+									"value": "select table_name,column_name, data_type_name as DATA_TYPE, LENGTH as CHAR_DATA_LENGTH, position as COLUMN_POSITION \nfrom table_columns where schema_name = '@{pipeline().parameters.schemaName}' and @{pipeline().parameters.tableNameSelector}\nORDER BY TABLE_NAME;",
+									"type": "Expression"
+								},
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "p1_hana",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					}
+				],
+				"parameters": {
+					"tableNameSelector": {
+						"type": "string"
+					},
+					"schemaName": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_media_copy')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Image",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-s1-nfs-001/hybris-media/sys_master/images"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "s1_media_source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "s1_media_sink_image",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy cronjob",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-s1-nfs-001/hybris-media/sys_master/cronjob"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "s1_media_source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "s1_media_sink_cronjob",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy impex",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-s1-nfs-001/hybris-media/sys_master/impex"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "s1_media_source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "s1_media_sink_impex",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy jasperreports",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-s1-nfs-001/hybris-media/sys_master/jasperreports"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "s1_media_source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "s1_media_sink_jasperreports",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy backofficeconfiguration",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-s1-nfs-001/hybris-media/sys_master/backofficeconfiguration"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "s1_media_source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "s1_media_sink_backofficeconfiguration",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy catalogsync",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-s1-nfs-001/hybris-media/sys_master/catalogsync"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "s1_media_source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "s1_media_sink_catalogsync",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy documents",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-s1-nfs-001/hybris-media/sys_master/documents"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "s1_media_source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "s1_media_sink_documents",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy email-body",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-s1-nfs-001/hybris-media/sys_master/email-body"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "s1_media_source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "s1_media_sink_email_body",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy root",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": true
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "s1_media_source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "s1_media_sink_root",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_table_column_azure')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "LookupTableAndColumns",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select TABLE_NAME, COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH as CHAR_DATA_LENGTH,\nNUMERIC_PRECISION, NUMERIC_SCALE, DATETIME_PRECISION, CHARACTER_MAXIMUM_LENGTH as CLOB_DATA_LENGTH, ORDINAL_POSITION as COLUMN_POSITION, IS_NULLABLE\nfrom INFORMATION_SCHEMA.COLUMNS\nwhere TABLE_SCHEMA = '@{pipeline().parameters.schemaName}' and @{pipeline().parameters.tableNameSelector}\norder by TABLE_NAME;",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "s1_azure",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					}
+				],
+				"parameters": {
+					"tableNameSelector": {
+						"type": "string"
+					},
+					"schemaName": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/s1_table_column_hana')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "LookupTableAndColumns",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SapHanaSource",
+								"query": {
+									"value": "select table_name,column_name, data_type_name as DATA_TYPE, LENGTH as CHAR_DATA_LENGTH, position as COLUMN_POSITION \nfrom table_columns where schema_name = '@{pipeline().parameters.schemaName}' and @{pipeline().parameters.tableNameSelector}\nORDER BY TABLE_NAME;",
+									"type": "Expression"
+								},
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "s1_hana",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					}
+				],
+				"parameters": {
+					"tableNameSelector": {
+						"type": "string"
+					},
+					"schemaName": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		}
+	]
+}

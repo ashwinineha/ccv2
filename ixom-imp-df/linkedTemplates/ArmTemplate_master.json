@@ -1,0 +1,159 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ixom-imp-df"
+		},
+		"ccv1_media_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ccv1_media'"
+		},
+		"d1_azure_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'd1_azure'"
+		},
+		"d1_hana_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'd1_hana'"
+		},
+		"p1_azure_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'p1_azure'"
+		},
+		"p1_blob_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'p1_blob'"
+		},
+		"p1_hana_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'p1_hana'"
+		},
+		"s1_azure_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 's1_azure'"
+		},
+		"s1_blob_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 's1_blob'"
+		},
+		"s1_hana_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 's1_hana'"
+		},
+		"ccv1_media_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "100.101.1.4"
+		},
+		"ccv1_media_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "migrate"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"ccv1_media_password": {
+						"value": "[parameters('ccv1_media_password')]"
+					},
+					"d1_azure_connectionString": {
+						"value": "[parameters('d1_azure_connectionString')]"
+					},
+					"d1_hana_connectionString": {
+						"value": "[parameters('d1_hana_connectionString')]"
+					},
+					"p1_azure_connectionString": {
+						"value": "[parameters('p1_azure_connectionString')]"
+					},
+					"p1_blob_connectionString": {
+						"value": "[parameters('p1_blob_connectionString')]"
+					},
+					"p1_hana_connectionString": {
+						"value": "[parameters('p1_hana_connectionString')]"
+					},
+					"s1_azure_connectionString": {
+						"value": "[parameters('s1_azure_connectionString')]"
+					},
+					"s1_blob_connectionString": {
+						"value": "[parameters('s1_blob_connectionString')]"
+					},
+					"s1_hana_connectionString": {
+						"value": "[parameters('s1_hana_connectionString')]"
+					},
+					"ccv1_media_properties_typeProperties_host": {
+						"value": "[parameters('ccv1_media_properties_typeProperties_host')]"
+					},
+					"ccv1_media_properties_typeProperties_userName": {
+						"value": "[parameters('ccv1_media_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ArmTemplate_1')]"
+			]
+		}
+	]
+}
