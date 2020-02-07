@@ -1,0 +1,116 @@
+{
+	"name": "S1_Hana_Azure_MEDIAS",
+	"properties": {
+		"activities": [
+			{
+				"name": "HanaToAzureCopy",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"retry": 10,
+					"retryIntervalInSeconds": 30
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RelationalSource",
+						"query": "SELECT * FROM HYB.MEDIAS"
+					},
+					"sink": {
+						"type": "SqlSink",
+						"writeBatchSize": 10000,
+						"preCopyScript": {
+							"value": "TRUNCATE TABLE [dbo].[MEDIAS]",
+							"type": "Expression"
+						}
+					},
+					"enableStaging": false,
+					"parallelCopies": 4,
+					"dataIntegrationUnits": 4,
+					"translator": {
+						"type": "TabularTranslator",
+						"columnMappings": {
+							"HJMPTS": "hjmpTS",
+							"CREATEDTS": "createdTS",
+							"MODIFIEDTS": "modifiedTS",
+							"TYPEPKSTRING": "TypePkString",
+							"OWNERPKSTRING": "OwnerPkString",
+							"PK": "PK",
+							"SEALED": "sealed",
+							"P_MIME": "p_mime",
+							"P_SIZE": "p_size",
+							"P_DATAPK": "p_datapk",
+							"P_LOCATION": "p_location",
+							"P_LOCATIONHASH": "p_locationhash",
+							"P_REALFILENAME": "p_realfilename",
+							"P_CODE": "p_code",
+							"P_INTERNALURL": "p_internalurl",
+							"P_DESCRIPTION": "p_description",
+							"P_ALTTEXT": "p_alttext",
+							"P_REMOVABLE": "p_removable",
+							"P_MEDIAFORMAT": "p_mediaformat",
+							"P_FOLDER": "p_folder",
+							"P_SUBFOLDERPATH": "p_subfolderpath",
+							"P_MEDIACONTAINER": "p_mediacontainer",
+							"P_CATALOG": "p_catalog",
+							"P_CATALOGVERSION": "p_catalogversion",
+							"P_METADATADATAPK": "p_metadatadatapk",
+							"P_ORIGINALDATAPK": "p_originaldatapk",
+							"P_ORIGINAL": "p_original",
+							"ACLTS": "aCLTS",
+							"PROPTS": "propTS",
+							"P_OUTPUTMIMETYPE": "p_outputmimetype",
+							"P_INPUTMIMETYPE": "p_inputmimetype",
+							"P_ITEMTIMESTAMP": "p_itemtimestamp",
+							"P_FORMAT": "p_format",
+							"P_SOURCEITEM": "p_sourceitem",
+							"P_FIELDSEPARATOR": "p_fieldseparator",
+							"P_QUOTECHARACTER": "p_quotecharacter",
+							"P_COMMENTCHARACTER": "p_commentcharacter",
+							"P_ENCODING": "p_encoding",
+							"P_LINESTOSKIP": "p_linestoskip",
+							"P_REMOVEONSUCCESS": "p_removeonsuccess",
+							"P_ZIPENTRY": "p_zipentry",
+							"P_EXTRACTIONID": "p_extractionid",
+							"P_ALLOWSCRIPTEVALUATION": "p_allowscriptevaluation",
+							"P_AUDITROOTITEM": "p_auditrootitem",
+							"P_AUDITREPORTCONFIG": "p_auditreportconfig",
+							"P_SCHEDULEDCOUNT": "p_scheduledcount",
+							"P_CRONJOBPOS": "p_cronjobpos",
+							"P_CRONJOB": "p_cronjob",
+							"P_ICON": "p_icon",
+							"P_COMPILEDREPORT": "p_compiledreport",
+							"P_BARCODETEXT": "p_barcodetext",
+							"P_BARCODETYPE": "p_barcodetype",
+							"P_CONTEXTITEM": "p_contextitem",
+							"P_DEEPLINKURL": "p_deeplinkurl",
+							"P_MESSAGE": "p_message",
+							"P_STOREFRONTSTATUS": "p_storefrontstatus",
+							"P_DOCUMENTTYPE": "p_documenttype",
+							"P_REVIEWDATE": "p_reviewdate",
+							"P_LASTREVIEWDATE": "p_lastreviewdate",
+							"P_URLONLY": "p_urlonly",
+							"P_PRODUCTCOUNTRY": "p_productcountry",
+							"P_DISPLAYDATE": "p_displaydate",
+							"P_BATCHNUMBER": "p_batchnumber"
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "S1_Hana_MEDIAS",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "S1_Azure_medias",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

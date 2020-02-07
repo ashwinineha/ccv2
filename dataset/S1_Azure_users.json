@@ -1,0 +1,170 @@
+{
+	"name": "S1_Azure_users",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "s1_azure",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "hjmpTS"
+			},
+			{
+				"name": "createdTS"
+			},
+			{
+				"name": "modifiedTS"
+			},
+			{
+				"name": "TypePkString"
+			},
+			{
+				"name": "OwnerPkString"
+			},
+			{
+				"name": "PK"
+			},
+			{
+				"name": "sealed"
+			},
+			{
+				"name": "p_description"
+			},
+			{
+				"name": "p_name"
+			},
+			{
+				"name": "p_uid"
+			},
+			{
+				"name": "p_profilepicture"
+			},
+			{
+				"name": "p_backofficelogindisabled"
+			},
+			{
+				"name": "p_defaultpaymentaddress"
+			},
+			{
+				"name": "p_defaultshipmentaddress"
+			},
+			{
+				"name": "p_passwordencoding"
+			},
+			{
+				"name": "passwd"
+			},
+			{
+				"name": "p_passwordanswer"
+			},
+			{
+				"name": "p_passwordquestion"
+			},
+			{
+				"name": "p_sessionlanguage"
+			},
+			{
+				"name": "p_sessioncurrency"
+			},
+			{
+				"name": "p_logindisabled"
+			},
+			{
+				"name": "p_lastlogin"
+			},
+			{
+				"name": "p_hmclogindisabled"
+			},
+			{
+				"name": "p_retentionstate"
+			},
+			{
+				"name": "p_userprofile"
+			},
+			{
+				"name": "p_deactivationdate"
+			},
+			{
+				"name": "p_europe1pricefactory_udg"
+			},
+			{
+				"name": "p_europe1pricefactory_upg"
+			},
+			{
+				"name": "p_europe1pricefactory_utg"
+			},
+			{
+				"name": "p_authorizedtounlockpages"
+			},
+			{
+				"name": "aCLTS"
+			},
+			{
+				"name": "propTS"
+			},
+			{
+				"name": "p_sapid"
+			},
+			{
+				"name": "p_phonenum"
+			},
+			{
+				"name": "p_email"
+			},
+			{
+				"name": "p_customerid"
+			},
+			{
+				"name": "p_previewcatalogversions"
+			},
+			{
+				"name": "p_title"
+			},
+			{
+				"name": "p_defaultpaymentinfo"
+			},
+			{
+				"name": "p_token"
+			},
+			{
+				"name": "p_originaluid"
+			},
+			{
+				"name": "p_type"
+			},
+			{
+				"name": "p_sapconsumerid"
+			},
+			{
+				"name": "p_sapcontactid"
+			},
+			{
+				"name": "p_sapisreplicated"
+			},
+			{
+				"name": "p_sapreplicationinfo"
+			},
+			{
+				"name": "p_sendwelcomeemail"
+			},
+			{
+				"name": "p_welcomeemailsent"
+			},
+			{
+				"name": "p_onboardingtoken"
+			},
+			{
+				"name": "p_active"
+			},
+			{
+				"name": "p_defaultb2bunit"
+			}
+		],
+		"typeProperties": {
+			"tableName": "users"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

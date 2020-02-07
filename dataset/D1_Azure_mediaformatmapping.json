@@ -1,0 +1,53 @@
+{
+	"name": "D1_Azure_mediaformatmapping",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "d1_azure",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "hjmpTS"
+			},
+			{
+				"name": "createdTS"
+			},
+			{
+				"name": "modifiedTS"
+			},
+			{
+				"name": "TypePkString"
+			},
+			{
+				"name": "OwnerPkString"
+			},
+			{
+				"name": "PK"
+			},
+			{
+				"name": "sealed"
+			},
+			{
+				"name": "p_source"
+			},
+			{
+				"name": "p_target"
+			},
+			{
+				"name": "p_mediacontext"
+			},
+			{
+				"name": "aCLTS"
+			},
+			{
+				"name": "propTS"
+			}
+		],
+		"typeProperties": {
+			"tableName": "mediaformatmapping"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,19 @@
+{
+	"name": "s1_media_sink_cronjob",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "s1_blob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "cronjob",
+				"container": "sys-master-cronjob"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

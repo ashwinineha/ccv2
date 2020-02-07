@@ -1,0 +1,18 @@
+{
+	"name": "s1_media_source_backofficeconfiguration",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ccv1_media",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "SftpLocation",
+				"folderPath": "/opt/nfs_shares/sy2-ixo-ixm-s1-nfs-001/hybris-media/sys_master/backofficeconfiguration"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

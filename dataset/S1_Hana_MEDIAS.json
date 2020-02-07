@@ -1,0 +1,203 @@
+{
+	"name": "S1_Hana_MEDIAS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "s1_hana",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RelationalTable",
+		"structure": [
+			{
+				"name": "HJMPTS"
+			},
+			{
+				"name": "CREATEDTS"
+			},
+			{
+				"name": "MODIFIEDTS"
+			},
+			{
+				"name": "TYPEPKSTRING"
+			},
+			{
+				"name": "OWNERPKSTRING"
+			},
+			{
+				"name": "PK"
+			},
+			{
+				"name": "P_MIME"
+			},
+			{
+				"name": "P_SIZE"
+			},
+			{
+				"name": "P_DATAPK"
+			},
+			{
+				"name": "P_LOCATION"
+			},
+			{
+				"name": "P_LOCATIONHASH"
+			},
+			{
+				"name": "P_REALFILENAME"
+			},
+			{
+				"name": "P_CODE"
+			},
+			{
+				"name": "P_INTERNALURL"
+			},
+			{
+				"name": "P_DESCRIPTION"
+			},
+			{
+				"name": "P_ALTTEXT"
+			},
+			{
+				"name": "P_REMOVABLE"
+			},
+			{
+				"name": "P_MEDIAFORMAT"
+			},
+			{
+				"name": "P_FOLDER"
+			},
+			{
+				"name": "P_SUBFOLDERPATH"
+			},
+			{
+				"name": "P_MEDIACONTAINER"
+			},
+			{
+				"name": "P_CATALOG"
+			},
+			{
+				"name": "P_CATALOGVERSION"
+			},
+			{
+				"name": "P_METADATADATAPK"
+			},
+			{
+				"name": "P_ORIGINALDATAPK"
+			},
+			{
+				"name": "P_ORIGINAL"
+			},
+			{
+				"name": "ACLTS"
+			},
+			{
+				"name": "PROPTS"
+			},
+			{
+				"name": "P_OUTPUTMIMETYPE"
+			},
+			{
+				"name": "P_INPUTMIMETYPE"
+			},
+			{
+				"name": "P_ITEMTIMESTAMP"
+			},
+			{
+				"name": "P_FORMAT"
+			},
+			{
+				"name": "P_SOURCEITEM"
+			},
+			{
+				"name": "P_FIELDSEPARATOR"
+			},
+			{
+				"name": "P_QUOTECHARACTER"
+			},
+			{
+				"name": "P_COMMENTCHARACTER"
+			},
+			{
+				"name": "P_ENCODING"
+			},
+			{
+				"name": "P_LINESTOSKIP"
+			},
+			{
+				"name": "P_REMOVEONSUCCESS"
+			},
+			{
+				"name": "P_ZIPENTRY"
+			},
+			{
+				"name": "P_ALLOWSCRIPTEVALUATION"
+			},
+			{
+				"name": "P_SCHEDULEDCOUNT"
+			},
+			{
+				"name": "P_CRONJOBPOS"
+			},
+			{
+				"name": "P_CRONJOB"
+			},
+			{
+				"name": "P_BARCODETEXT"
+			},
+			{
+				"name": "P_BARCODETYPE"
+			},
+			{
+				"name": "P_CONTEXTITEM"
+			},
+			{
+				"name": "P_DEEPLINKURL"
+			},
+			{
+				"name": "P_ICON"
+			},
+			{
+				"name": "P_COMPILEDREPORT"
+			},
+			{
+				"name": "P_MESSAGE"
+			},
+			{
+				"name": "P_STOREFRONTSTATUS"
+			},
+			{
+				"name": "P_DOCUMENTTYPE"
+			},
+			{
+				"name": "P_REVIEWDATE"
+			},
+			{
+				"name": "P_URLONLY"
+			},
+			{
+				"name": "P_DISPLAYDATE"
+			},
+			{
+				"name": "P_BATCHNUMBER"
+			},
+			{
+				"name": "P_PRODUCTCOUNTRY"
+			},
+			{
+				"name": "P_LASTREVIEWDATE"
+			},
+			{
+				"name": "SEALED"
+			},
+			{
+				"name": "P_EXTRACTIONID"
+			},
+			{
+				"name": "P_AUDITROOTITEM"
+			},
+			{
+				"name": "P_AUDITREPORTCONFIG"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

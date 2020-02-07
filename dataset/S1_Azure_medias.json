@@ -1,0 +1,206 @@
+{
+	"name": "S1_Azure_medias",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "s1_azure",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "hjmpTS"
+			},
+			{
+				"name": "createdTS"
+			},
+			{
+				"name": "modifiedTS"
+			},
+			{
+				"name": "TypePkString"
+			},
+			{
+				"name": "OwnerPkString"
+			},
+			{
+				"name": "PK"
+			},
+			{
+				"name": "sealed"
+			},
+			{
+				"name": "p_mime"
+			},
+			{
+				"name": "p_size"
+			},
+			{
+				"name": "p_datapk"
+			},
+			{
+				"name": "p_location"
+			},
+			{
+				"name": "p_locationhash"
+			},
+			{
+				"name": "p_realfilename"
+			},
+			{
+				"name": "p_code"
+			},
+			{
+				"name": "p_internalurl"
+			},
+			{
+				"name": "p_description"
+			},
+			{
+				"name": "p_alttext"
+			},
+			{
+				"name": "p_removable"
+			},
+			{
+				"name": "p_mediaformat"
+			},
+			{
+				"name": "p_folder"
+			},
+			{
+				"name": "p_subfolderpath"
+			},
+			{
+				"name": "p_mediacontainer"
+			},
+			{
+				"name": "p_catalog"
+			},
+			{
+				"name": "p_catalogversion"
+			},
+			{
+				"name": "p_metadatadatapk"
+			},
+			{
+				"name": "p_originaldatapk"
+			},
+			{
+				"name": "p_original"
+			},
+			{
+				"name": "aCLTS"
+			},
+			{
+				"name": "propTS"
+			},
+			{
+				"name": "p_outputmimetype"
+			},
+			{
+				"name": "p_inputmimetype"
+			},
+			{
+				"name": "p_itemtimestamp"
+			},
+			{
+				"name": "p_format"
+			},
+			{
+				"name": "p_sourceitem"
+			},
+			{
+				"name": "p_fieldseparator"
+			},
+			{
+				"name": "p_quotecharacter"
+			},
+			{
+				"name": "p_commentcharacter"
+			},
+			{
+				"name": "p_encoding"
+			},
+			{
+				"name": "p_linestoskip"
+			},
+			{
+				"name": "p_removeonsuccess"
+			},
+			{
+				"name": "p_zipentry"
+			},
+			{
+				"name": "p_extractionid"
+			},
+			{
+				"name": "p_allowscriptevaluation"
+			},
+			{
+				"name": "p_auditrootitem"
+			},
+			{
+				"name": "p_auditreportconfig"
+			},
+			{
+				"name": "p_scheduledcount"
+			},
+			{
+				"name": "p_cronjobpos"
+			},
+			{
+				"name": "p_cronjob"
+			},
+			{
+				"name": "p_icon"
+			},
+			{
+				"name": "p_compiledreport"
+			},
+			{
+				"name": "p_barcodetext"
+			},
+			{
+				"name": "p_barcodetype"
+			},
+			{
+				"name": "p_contextitem"
+			},
+			{
+				"name": "p_deeplinkurl"
+			},
+			{
+				"name": "p_message"
+			},
+			{
+				"name": "p_storefrontstatus"
+			},
+			{
+				"name": "p_documenttype"
+			},
+			{
+				"name": "p_reviewdate"
+			},
+			{
+				"name": "p_lastreviewdate"
+			},
+			{
+				"name": "p_urlonly"
+			},
+			{
+				"name": "p_productcountry"
+			},
+			{
+				"name": "p_displaydate"
+			},
+			{
+				"name": "p_batchnumber"
+			}
+		],
+		"typeProperties": {
+			"tableName": "medias"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
