@@ -1052,7 +1052,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "s1_media_source",
+								"referenceName": "p1_media_source",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -1119,8 +1119,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/p1_media_source')]",
-				"[concat(variables('factoryId'), '/datasets/p1_media_sink')]",
-				"[concat(variables('factoryId'), '/datasets/s1_media_source')]"
+				"[concat(variables('factoryId'), '/datasets/p1_media_sink')]"
 			]
 		},
 		{
@@ -3598,7 +3597,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "s1_media_source",
+								"referenceName": "p1_media_source",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -3617,7 +3616,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/s1_media_source')]",
+				"[concat(variables('factoryId'), '/datasets/p1_media_source')]",
 				"[concat(variables('factoryId'), '/datasets/p1_media_sink')]"
 			]
 		}
