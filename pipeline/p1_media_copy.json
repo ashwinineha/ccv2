@@ -356,7 +356,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "s1_media_source",
+						"referenceName": "p1_media_source",
 						"type": "DatasetReference"
 					}
 				],
