@@ -20,7 +20,7 @@
 						"storeSettings": {
 							"type": "SftpReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-p1-nfs-001/hybris-media/sys_master/image*"
+							"wildcardFolderPath": "/opt/nfs_shares/sy2-ixo-ixm-p1-nfs-001/hybris-media/sys_master/email*"
 						}
 					},
 					"sink": {
